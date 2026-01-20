@@ -139,7 +139,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'kikoulila@gmail.com'        # replace with your Gmail
-EMAIL_HOST_PASSWORD = 'olhc rmoq jvjf csng'       # replace with Gmail App Password
+EMAIL_HOST_PASSWORD = 'zuqg sgcp dqrp nhfm'       # replace with Gmail App Password
 DEFAULT_FROM_EMAIL = 'Tanitech <info@tanitech.de>'
 
 # -----------------------------
