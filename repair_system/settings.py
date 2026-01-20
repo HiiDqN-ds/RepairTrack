@@ -5,7 +5,10 @@ Django settings for repair_system project.
 import os
 from pathlib import Path
 import dj_database_url
+from dotenv import load_dotenv
 
+# Load .env variables
+load_dotenv()
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
