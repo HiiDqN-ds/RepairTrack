@@ -55,35 +55,54 @@ def staff_ticket_detail(request, id):
 # -----------------------------
 @login_required(login_url='staff:login')
 def update_ticket_status(request, id):
-    """Update ticket status and notify client by email"""
+    """Update ticket status + price and notify client by email"""
     ticket = get_object_or_404(Ticket, id=id)
 
     if request.method == "POST":
+        # Get values from form
         new_status = request.POST.get("status", ticket.status)
+        new_price = request.POST.get("price")
+
+        # Update status
         ticket.status = new_status
+
+        # Update price ONLY if provided
+        if new_price:
+            try:
+                ticket.estimated_price = float(new_price)
+            except ValueError:
+                messages.error(request, "Invalid price format ❌")
+                return redirect('staff:staff_ticket_detail', id=ticket.id)
+
+        # Save changes to database
         ticket.save()
 
-        # Send email notification to client
+        # Send email notification
         subject = f"Update: Your Repair Status is now '{ticket.status}'"
         message = (
             f"Hello {ticket.client.first_name},\n\n"
-            f"Your ticket with tracking number {ticket.tracking_id} is now '{ticket.status}'.\n\n"
-            "Thanks,\nTanitech Team"
+            f"Your ticket with tracking number {ticket.tracking_id} has been updated.\n"
+            f"New status: {ticket.status}\n"
         )
+
+        if ticket.estimated_price:
+            message += f"Estimated price: {ticket.estimated_price} €\n"
+
+        message += "\nThanks,\nTanitech Team"
+
         try:
             send_mail(
                 subject,
                 message,
-                None,  # uses DEFAULT_FROM_EMAIL
+                None,
                 [ticket.client.email],
-                fail_silently=False  # raise error if sending fails
+                fail_silently=False
             )
-            messages.success(request, f"Email sent successfully to {ticket.client.email} ✅")
+            messages.success(request, f"Saved and email sent to {ticket.client.email} ✅")
         except Exception as e:
-            messages.error(request, f"Failed to send email: {e} ❌")
+            messages.error(request, f"Saved, but email failed: {e} ❌")
 
     return redirect('staff:staff_ticket_detail', id=ticket.id)
-
 
 
 # -----------------------------
