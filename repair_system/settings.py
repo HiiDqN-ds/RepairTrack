@@ -119,6 +119,12 @@ WSGI_APPLICATION = "repair_system.wsgi.application"
 import dj_database_url
 import os
 
+# -----------------------------
+# Database: PostgreSQL (Render + local fallback)
+# -----------------------------
+import os
+import dj_database_url
+
 DATABASES = {
     "default": dj_database_url.parse(
         os.environ.get(
@@ -130,9 +136,6 @@ DATABASES = {
     )
 }
 
-# -----------------------------
-# Database: PostgreSQL Extr
-#------------------------------
 
 # -----------------------------
 # Password validation
