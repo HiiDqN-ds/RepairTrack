@@ -117,17 +117,30 @@ import os
 
 import dj_database_url
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'repairt_db_zqz8'),
-        'USER': os.environ.get('DB_USER', 'repairt_db_zqz8_user'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'KVUdGDMPwlLM8DmTr8Tg3CGZPsRMtGEy'),
-        'HOST': os.environ.get('DB_HOST', 'dpg-d5nkfjtactks73ci24qg-a'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
-    }
-}
+#DATABASES = {
+   # 'default': {
+       # 'ENGINE': 'django.db.backends.postgresql',
+      #  'NAME': os.environ.get('DB_NAME', 'repairt_db_zqz8'),
+     #   'USER': os.environ.get('DB_USER', 'repairt_db_zqz8_user'),
+    #    'PASSWORD': os.environ.get('DB_PASSWORD', 'KVUdGDMPwlLM8DmTr8Tg3CGZPsRMtGEy'),
+   #     'HOST': os.environ.get('DB_HOST', 'dpg-d5nkfjtactks73ci24qg-a'),
+  #      'PORT': os.environ.get('DB_PORT', '5432'),
+ #   }
+#}
+# -----------------------------
+# Database: PostgreSQL Extr
+#------------------------------
+import dj_database_url
+import os
 
+DATABASES = {
+    'default': dj_database_url.parse(
+        os.environ.get(
+            'DATABASE_URL',
+            'postgresql://repairt_db_zqz8_user:KVUdGDMPwlLM8DmTr8Tg3CGZPsRMtGEy@dpg-d5nkfjtactks73ci24qg-a.oregon-postgres.render.com/repairt_db_zqz8'
+        )
+    )
+}
 # -----------------------------
 # Password validation
 # -----------------------------
