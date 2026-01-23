@@ -4,6 +4,11 @@ import uuid
 
 
 # tickets/models.py
+import uuid
+from django.db import models
+from django.contrib.auth.models import User
+
+
 class Ticket(models.Model):
     STATUS_CHOICES = [
         ('open', 'Open'),
@@ -16,15 +21,20 @@ class Ticket(models.Model):
     tracking_id = models.CharField(
         max_length=12,
         unique=True,
-        editable=False,
-        blank=True
+        blank=True,
+        editable=False
     )
 
     title = models.CharField(max_length=200)
     description = models.TextField()
+
     client = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='open')
+    status = models.CharField(
+        max_length=30,
+        choices=STATUS_CHOICES,
+        default='open'
+    )
 
     device_type = models.CharField(max_length=50, blank=True, null=True)
     device_model = models.CharField(max_length=100, blank=True, null=True)
@@ -42,7 +52,7 @@ class Ticket(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.tracking_id:
-            self.tracking_id = uuid.uuid4().hex.upper()[:12]
+            self.tracking_id = uuid.uuid4().hex[:12].upper()
         super().save(*args, **kwargs)
 
     def __str__(self):

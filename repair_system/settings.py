@@ -21,14 +21,19 @@ ALLOWED_HOSTS = []
 # -----------------------------
 # Media settings
 # -----------------------------
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
 # -----------------------------
-# Static files settings
+# Static files (CSS, JS, Images)
 # -----------------------------
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# -----------------------------
+# Media files (uploads)
+# -----------------------------
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+
 
 # -----------------------------
 # Application definition
@@ -146,3 +151,5 @@ DEFAULT_FROM_EMAIL = 'Tanitech <info@tanitech.de>'
 # Default primary key field type
 # -----------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

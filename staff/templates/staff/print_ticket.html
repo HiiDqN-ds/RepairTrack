@@ -4,10 +4,19 @@
     <meta charset="UTF-8">
     <title>Print Ticket {{ ticket.tracking_id }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Include JsBarcode -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <style>
         @media print {
-            body { -webkit-print-color-adjust: exact; }
-            .no-print { display: none; }
+            body {
+                -webkit-print-color-adjust: exact; /* Chrome, Safari */
+                -moz-print-color-adjust: exact;    /* Firefox */
+                print-color-adjust: exact;         /* Standard */
+            }
+
+            .no-print {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -16,10 +25,15 @@
 <div class="max-w-md mx-auto border p-6 shadow-lg rounded-lg">
     <h2 class="text-2xl font-bold mb-4 text-center">Repair Ticket</h2>
     <div class="mb-2"><strong>Tracking ID:</strong> {{ ticket.tracking_id }}</div>
-    <div class="mb-2"><strong>Client:</strong> {{ ticket.client.username }}</div>
+    <div class="mb-2"><strong>Client:</strong> {{ ticket.client.first_name }} {{ ticket.client.last_name }}</div>
     <div class="mb-2"><strong>Device:</strong> {{ ticket.device_type }} – {{ ticket.device_model }}</div>
     <div class="mb-2"><strong>Status:</strong> {{ ticket.status|title }}</div>
     <div class="mb-2"><strong>Created:</strong> {{ ticket.created_at|date:"Y-m-d H:i" }}</div>
+
+    <!-- Barcode -->
+    <div class="my-4 text-center">
+        <svg id="barcode"></svg>
+    </div>
 
     <div class="mt-4 text-center no-print">
         <button onclick="window.print()"
@@ -28,6 +42,17 @@
         </button>
     </div>
 </div>
+
+<script>
+    // Generate the barcode using the tracking ID
+    JsBarcode("#barcode", "{{ ticket.tracking_id }}", {
+        format: "CODE128",
+        lineColor: "#000",
+        width: 2,
+        height: 50,
+        displayValue: true
+    });
+</script>
 
 </body>
 </html>

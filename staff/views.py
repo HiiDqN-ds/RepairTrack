@@ -104,6 +104,22 @@ def update_ticket_status(request, id):
 
     return redirect('staff:staff_ticket_detail', id=ticket.id)
 
+# -----------------------------
+# Delete Ticket 
+# -----------------------------
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from tickets.models import Ticket
+
+@login_required(login_url='staff:login')
+def delete_ticket(request, ticket_id):
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+
+    if request.method == "POST":
+        ticket.delete()
+
+    return redirect('staff:dashboard')
+
 
 # -----------------------------
 # Printable Ticket Label

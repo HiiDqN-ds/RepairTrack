@@ -32,19 +32,20 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <p><strong>Client:</strong> {{ ticket.client.username }}</p>
+          
+          <p><strong>Client:</strong> {{ ticket.client.first_name }} {{ ticket.client.last_name }}</p>
           <p><strong>Phone:</strong> {{ ticket.client_phone|default:"N/A" }}</p>
           <p><strong>Email:</strong> {{ ticket.client.email }}</p>
         </div>
         <div>
           <p><strong>Device:</strong> {{ ticket.device_type }} – {{ ticket.device_model }}</p>
           <p><strong>Status:</strong>
-            <span class="px-2 py-1 rounded-full text-white
-              {% if ticket.status == 'open' %}bg-green-500
-              {% elif ticket.status == 'in_progress' %}bg-yellow-500
-              {% else %}bg-gray-500{% endif %}">
-              {{ ticket.status|title }}
-            </span>
+              <span class="px-2 py-1 rounded-full text-white
+                {% if ticket.status == 'open' %}bg-green-500
+                {% elif ticket.status == 'in_progress' %}bg-yellow-500
+                {% else %}bg-gray-500{% endif %}">
+                {{ ticket.status|title }}
+              </span>
           </p>
         </div>
       </div>
@@ -88,6 +89,9 @@
             </button>
             <a href="{% url 'staff:print_ticket' ticket.id %}" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
               Print Ticket
+            </a>
+            <a href="{% url 'generate_auftrag' ticket.id %}" target="_blank" class="bg-yellow-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+              Generate Auftrag PDF
             </a>
           </div>
         </form>
