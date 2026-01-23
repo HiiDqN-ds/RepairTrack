@@ -9,8 +9,15 @@ from django.contrib import messages
 # -----------------------------
 # Staff Authentication
 # -----------------------------
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.utils.http import url_has_allowed_host_and_scheme
+from django.conf import settings
+
 def staff_login(request):
     """Staff login page"""
+    next_url = request.GET.get("next") or request.POST.get("next") or '/staff/dashboard/'
+
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -19,11 +26,16 @@ def staff_login(request):
 
         if user and user.is_staff:
             login(request, user)
-            return redirect('staff:dashboard')
+            
+            # Safety check to prevent open redirect
+            if url_has_allowed_host_and_scheme(next_url, allowed_hosts=settings.ALLOWED_HOSTS):
+                return redirect(next_url)
+            return redirect('/staff/dashboard/')
 
-        return render(request, "staff/login.html", {"error": "Invalid credentials"})
+        return render(request, "staff/login.html", {"error": "Invalid credentials", "next": next_url})
 
-    return render(request, "staff/login.html")
+    return render(request, "staff/login.html", {"next": next_url})
+
 
 
 @login_required(login_url='staff:login')

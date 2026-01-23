@@ -116,40 +116,24 @@ WSGI_APPLICATION = "repair_system.wsgi.application"
 # -----------------------------
 # Database: PostgreSQL
 # -----------------------------
-import os
 import dj_database_url
+import os
 
-# Default database: local development
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'repairtrack_local'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'mypassword'),
-        'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
-    }
+    "default": dj_database_url.parse(
+        os.environ.get(
+            "DATABASE_URL",
+            "postgresql://repairt_db_zqz8_user:KVUdGDMPwlLM8DmTr8Tg3CGZPsRMtGEy@dpg-d5nkfjtactks73ci24qg-a.oregon-postgres.render.com/repairt_db_zqz8"
+        ),
+        conn_max_age=600,
+        ssl_require=True,
+    )
 }
-
-# If DATABASE_URL exists (on Render), override with it
-DATABASE_URL = os.environ.get('DATABASE_URL')
-if DATABASE_URL:
-    DATABASES['default'] = dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
 
 # -----------------------------
 # Database: PostgreSQL Extr
 #------------------------------
-import dj_database_url
-import os
 
-DATABASES = {
-    'default': dj_database_url.parse(
-        os.environ.get(
-            'DATABASE_URL',
-            'postgresql://repairt_db_zqz8_user:KVUdGDMPwlLM8DmTr8Tg3CGZPsRMtGEy@dpg-d5nkfjtactks73ci24qg-a.oregon-postgres.render.com/repairt_db_zqz8'
-        )
-    )
-}
 # -----------------------------
 # Password validation
 # -----------------------------
