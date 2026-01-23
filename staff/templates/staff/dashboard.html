@@ -31,17 +31,21 @@
 
   <!-- Dashboard Title -->
   <h1 class="text-3xl font-bold text-gray-800 mb-6">Repair Tickets Dashboard</h1>
-
-  <!-- Search + Track Button -->
-  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
-    <input 
+<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+  <input 
       type="text"
       id="search-box"
       placeholder="Search Tracking ID / Client / Device..."
       class="border rounded-full px-4 py-2 w-full sm:w-80 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
       autocomplete="off"
-    >
-  </div>
+  >
+  <a href="/media/documents/repair_form.pdf" target="_blank"
+     class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-full shadow-md transition">
+     📄 Repair Form
+  </a>
+</div>
+  <!-- Search + Track Button -->
+
 
   <!-- Tickets Table -->
   <div class="overflow-x-auto bg-white rounded-2xl shadow-lg p-6">
