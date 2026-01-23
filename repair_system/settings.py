@@ -99,14 +99,32 @@ WSGI_APPLICATION = "repair_system.wsgi.application"
 # -----------------------------
 # Database: MySQL local
 # -----------------------------
+#DATABASES = {
+    #'default': {
+       # 'ENGINE': 'django.db.backends.mysql',
+      #  'NAME': 'repair_db',      # replace with your MySQL database name
+     #   'USER': 'root',            # replace with your MySQL user
+    #    'PASSWORD': 'root',        # replace with your MySQL password
+   #     'HOST': 'localhost',
+  #      'PORT': '3306',
+ #   }
+#}
+
+# -----------------------------
+# Database: PostgreSQL
+# -----------------------------
+import os
+
+import dj_database_url
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'repair_db',      # replace with your MySQL database name
-        'USER': 'root',            # replace with your MySQL user
-        'PASSWORD': 'root',        # replace with your MySQL password
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME', 'repairt_db_zqz8'),
+        'USER': os.environ.get('DB_USER', 'repairt_db_zqz8_user'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'KVUdGDMPwlLM8DmTr8Tg3CGZPsRMtGEy'),
+        'HOST': os.environ.get('DB_HOST', 'dpg-d5nkfjtactks73ci24qg-a'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
