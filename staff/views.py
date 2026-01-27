@@ -67,40 +67,42 @@ def staff_ticket_detail(request, id):
 # -----------------------------
 @login_required(login_url='staff:login')
 def update_ticket_status(request, id):
-    """Update ticket status + price and notify client by email"""
     ticket = get_object_or_404(Ticket, id=id)
 
     if request.method == "POST":
-        # Get values from form
+        # Status
         new_status = request.POST.get("status", ticket.status)
-        new_price = request.POST.get("price")
-
-        # Update status
         ticket.status = new_status
 
-        # Update price ONLY if provided
-        if new_price:
-            try:
-                ticket.estimated_price = float(new_price)
-            except ValueError:
-                messages.error(request, "Invalid price format ❌")
-                return redirect('staff:staff_ticket_detail', id=ticket.id)
+        # Price
+        price = request.POST.get("price")
+        if price:
+            ticket.estimated_price = price
 
-        # Save changes to database
+        # Staff note
+        staff_note = request.POST.get("staff_note")
+
         ticket.save()
 
-        # Send email notification
-        subject = f"Update: Your Repair Status is now '{ticket.status}'"
-        message = (
-            f"Hello {ticket.client.first_name},\n\n"
-            f"Your ticket with tracking number {ticket.tracking_id} has been updated.\n"
-            f"New status: {ticket.status}\n"
-        )
+        # Build email message
+        subject = f"Update zu Ihrem Reparaturauftrag #{ticket.tracking_id}"
 
-        if ticket.estimated_price:
-            message += f"Estimated price: {ticket.estimated_price} €\n"
+        message = f"""
+Hallo {ticket.client.first_name},
 
-        message += "\nThanks,\nTanitech Team"
+Es gibt ein neues Update zu Ihrem Auftrag.
+
+Status: {ticket.get_status_display()}
+Preis: {ticket.estimated_price} €
+
+Nachricht vom Techniker:
+{staff_note or 'Keine zusätzliche Notiz.'}
+
+Tracking Nummer: {ticket.tracking_id}
+
+Mit freundlichen Grüßen  
+Tanitech Team
+"""
 
         try:
             send_mail(
@@ -108,11 +110,11 @@ def update_ticket_status(request, id):
                 message,
                 None,
                 [ticket.client.email],
-                fail_silently=False
+                fail_silently=False,
             )
-            messages.success(request, f"Saved and email sent to {ticket.client.email} ✅")
+            messages.success(request, "Update + Nachricht erfolgreich an Kunden gesendet ✅")
         except Exception as e:
-            messages.error(request, f"Saved, but email failed: {e} ❌")
+            messages.error(request, f"E-Mail Fehler: {e} ❌")
 
     return redirect('staff:staff_ticket_detail', id=ticket.id)
 
