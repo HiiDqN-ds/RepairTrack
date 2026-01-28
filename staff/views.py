@@ -151,6 +151,7 @@ from django.core.mail import EmailMessage
 from tickets.models import Ticket
 from django.contrib.auth.models import User
 from tickets.utils import generate_pdf
+
 @login_required(login_url='staff:login')
 def create_ticket(request):
     if request.method == "POST":
