@@ -1,0 +1,20 @@
+<form method="POST" class="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow">
+  {% csrf_token %}
+
+  <h2 class="text-2xl font-bold mb-4">Create Ticket Manually</h2>
+
+  <input name="tracking_id" placeholder="Tracking ID (optional)" class="w-full border p-2 mb-3">
+
+  <input name="client_first_name" placeholder="First name" class="w-full border p-2 mb-3" required>
+  <input name="client_last_name" placeholder="Last name" class="w-full border p-2 mb-3" required>
+  <input name="client_email" placeholder="Email" class="w-full border p-2 mb-3" required>
+
+  <input name="device_type" placeholder="Device type" class="w-full border p-2 mb-3">
+  <input name="device_model" placeholder="Device model" class="w-full border p-2 mb-3">
+
+  <textarea name="problem_description" placeholder="Problem" class="w-full border p-2 mb-3"></textarea>
+
+  <input name="estimated_price" placeholder="Price" class="w-full border p-2 mb-3">
+
+  <button class="bg-blue-600 text-white px-4 py-2 rounded">Create & Send Contract</button>
+</form>

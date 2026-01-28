@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.shortcuts import get_object_or_404
 from .models import Ticket
+from django.core.mail import EmailMessage
+from .utils import generate_pdf
 
 import io
 from reportlab.lib.pagesizes import A4

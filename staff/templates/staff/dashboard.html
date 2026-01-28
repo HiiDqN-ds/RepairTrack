@@ -43,9 +43,11 @@
      class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-full shadow-md transition">
      📄 Repair Form
   </a>
+  <button onclick="openModal()"
+    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full shadow-md transition">
+    ➕ New Ticket
+  </button>
 </div>
-  <!-- Search + Track Button -->
-
 
   <!-- Tickets Table -->
   <div class="overflow-x-auto bg-white rounded-2xl shadow-lg p-6">
@@ -109,6 +111,81 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<!-- Modal Background -->
+<div id="ticketModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+
+  <!-- Modal Box -->
+  <div class="bg-white w-full max-w-xl rounded-2xl shadow-xl p-6 relative animate-fade-in">
+
+    <h2 class="text-2xl font-bold mb-4">Create New Ticket</h2>
+
+    <form method="POST" action="{% url 'staff:create_ticket' %}">
+      {% csrf_token %}
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input name="tracking_id" placeholder="Tracking ID (manual)" required
+          class="border px-4 py-2 rounded-lg w-full font-mono md:col-span-2 bg-yellow-50 focus:ring-2 focus:ring-blue-500">
+
+        <input name="client_first_name" placeholder="First Name" required
+          class="border px-4 py-2 rounded-lg w-full">
+
+        <input name="client_last_name" placeholder="Last Name" required
+          class="border px-4 py-2 rounded-lg w-full">
+
+        <input name="client_email" type="email" placeholder="Email" required
+          class="border px-4 py-2 rounded-lg w-full">
+
+        <input name="client_phone" placeholder="Phone"
+          class="border px-4 py-2 rounded-lg w-full">
+
+        <input name="device_type" placeholder="Device Type" required
+          class="border px-4 py-2 rounded-lg w-full">
+
+        <input name="device_model" placeholder="Device Model"
+          class="border px-4 py-2 rounded-lg w-full">
+      </div>
+
+      <textarea name="problem_description" rows="3" placeholder="Problem description"
+        class="border px-4 py-2 rounded-lg w-full mt-4"></textarea>
+
+      <div class="flex justify-end gap-3 mt-6">
+        <button type="button" onclick="closeModal()"
+          class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300">
+          Cancel
+        </button>
+
+        <button type="submit"
+          class="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 shadow">
+          Create Ticket
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<script>
+function openModal() {
+  document.getElementById("ticketModal").classList.remove("hidden");
+  document.getElementById("ticketModal").classList.add("flex");
+}
+
+function closeModal() {
+  document.getElementById("ticketModal").classList.add("hidden");
+  document.getElementById("ticketModal").classList.remove("flex");
+}
+</script>
+
+<style>
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+</style>
 
 </body>
 </html>

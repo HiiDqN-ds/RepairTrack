@@ -11,5 +11,5 @@ urlpatterns = [
     path('ticket/<int:id>/update/', views.update_ticket_status, name='update_ticket_status'),
     path('ticket/delete/<int:ticket_id>/', views.delete_ticket, name='delete_ticket'),
     path('ticket/<int:id>/print/', views.print_ticket, name='print_ticket'),  # <--- new
-    
+    path("create-ticket/", views.create_ticket, name="create_ticket"),
 ]

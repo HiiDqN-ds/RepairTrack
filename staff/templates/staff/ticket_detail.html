@@ -96,14 +96,12 @@
               class="border px-3 py-2 rounded w-full"
             ></textarea>
           </div>
-          <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-            Save & Notify Client
-          </button>
           <!-- Buttons -->
           <div class="md:col-span-2 flex gap-3 mt-2">
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+            <button type="submit" onclick="return confirmUpdate()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
               Save & Notify Client
             </button>
+
             <a href="{% url 'staff:print_ticket' ticket.id %}" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
               Print Ticket
             </a>
@@ -123,6 +121,11 @@
       el.classList.add('opacity-0', 'transition', 'duration-700', 'ease-out');
     });
   }, 3000);
+
+  <button type="submit" onclick="return confirmUpdate()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+  Save & Notify Client
+  </button>
+
 </script>
 
 </body>

@@ -19,10 +19,8 @@ class Ticket(models.Model):
     ]
 
     tracking_id = models.CharField(
-        max_length=12,
-        unique=True,
-        blank=True,
-        editable=False
+        max_length=50,   # increase length to avoid "value too long" error
+        unique=True
     )
 
     title = models.CharField(max_length=200)
@@ -52,8 +50,9 @@ class Ticket(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.tracking_id:
-            self.tracking_id = uuid.uuid4().hex[:12].upper()
+            self.tracking_id = uuid.uuid4().hex.upper()[:12]
         super().save(*args, **kwargs)
+
 
     def __str__(self):
         return f"{self.tracking_id} - {self.client.username}"

@@ -143,3 +143,86 @@ def print_ticket(request, id):
     """Printable ticket for sticking on device"""
     ticket = get_object_or_404(Ticket, id=id)
     return render(request, 'staff/print_ticket.html', {'ticket': ticket})
+
+
+
+from django.shortcuts import render, redirect
+from django.core.mail import EmailMessage
+from tickets.models import Ticket
+from django.contrib.auth.models import User
+from tickets.utils import generate_pdf
+@login_required(login_url='staff:login')
+def create_ticket(request):
+    if request.method == "POST":
+        tracking_id = request.POST.get("tracking_id")
+
+        first = request.POST.get("client_first_name")
+        last = request.POST.get("client_last_name")
+        email = request.POST.get("client_email")
+        phone = request.POST.get("client_phone")
+        device_type = request.POST.get("device_type")
+        device_model = request.POST.get("device_model")
+        description = request.POST.get("problem_description")
+        price = request.POST.get("estimated_price") or 0
+
+        # Validation
+        if not tracking_id:
+            messages.error(request, "Tracking ID is required.")
+            return redirect('staff:dashboard')
+
+        if Ticket.objects.filter(tracking_id=tracking_id).exists():
+            messages.error(request, "Tracking ID already exists.")
+            return redirect('staff:dashboard')
+
+        # Get or create client
+        user, _ = User.objects.get_or_create(
+            username=email,
+            defaults={
+                "email": email,
+                "first_name": first,
+                "last_name": last
+            }
+        )
+
+        # Create ticket with manual tracking ID
+        ticket = Ticket.objects.create(
+            tracking_id=tracking_id,
+            title=f"{device_type} repair",
+            description=description,
+            client=user,
+            client_phone=phone,
+            device_type=device_type,
+            device_model=device_model,
+            estimated_price=price
+        )
+
+        # Generate PDF
+        pdf = generate_pdf(ticket)
+
+        # Send Email
+        subject = f"Reparaturauftrag #{ticket.tracking_id}"
+        body = f"""Hallo {first},
+
+Ihr Reparaturauftrag wurde erstellt.
+
+Tracking Nummer: {ticket.tracking_id}
+
+Das PDF finden Sie im Anhang.
+
+Mit freundlichen Grüßen  
+Tanitech Team
+"""
+
+        msg = EmailMessage(subject, body, None, [email])
+        msg.attach(
+            f"auftrag_{ticket.tracking_id}.pdf",
+            pdf.getvalue(),
+            "application/pdf"
+        )
+        msg.send()
+
+        messages.success(request, "Ticket created and email sent successfully.")
+        return redirect("staff:dashboard")
+
+    # If someone opens URL manually
+    return redirect("staff:dashboard")
