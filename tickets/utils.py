@@ -37,7 +37,7 @@ def generate_pdf(ticket):
         logo = Image(logo_path, width=110, height=55)
         header_data.append([logo, Paragraph(
             "<b>TaniTech Repair Center</b><br/>"
-            "Adresse: Musterstraße 12, 12345 Berlin<br/>"
+            "Adresse: Friedrichstraße 1, 40217 Düsseldorf<br/>"
             "Telefon: +49 123 456789<br/>"
             "E-Mail: info@tanitech.de",
             normal
@@ -45,7 +45,7 @@ def generate_pdf(ticket):
     else:
         header_data.append(["", Paragraph(
             "<b>TaniTech Repair Center</b><br/>"
-            "Adresse: Musterstraße 12, 12345 Berlin<br/>"
+            "Adresse: Friedrichstraße 1, 40217 Düsseldorf<br/>"
             "Telefon: +49 123 456789<br/>"
             "E-Mail: info@tanitech.de",
             normal
