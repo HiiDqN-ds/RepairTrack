@@ -120,12 +120,7 @@ def generate_pdf(ticket):
     elements.append(Paragraph(agreement_text, normal))
     elements.append(Spacer(1, 30))
 
-    # -----------------------------
-    # SIGNATURES
-    # -----------------------------
-    elements.append(Paragraph("Kunde Unterschrift: ____________________________", normal))
-    elements.append(Spacer(1, 10))
-    elements.append(Paragraph("Techniker Unterschrift: ________________________", normal))
+  
 
     doc.build(elements)
     buffer.seek(0)
