@@ -3,41 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <title>Print Ticket {{ ticket.tracking_id }}</title>
-    <link rel="shortcut icon" href="repair_system\static\favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="repair_system/static/favicon.ico" type="image/x-icon">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Include JsBarcode -->
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-    <style>
-        @media print {
-            body {
-                -webkit-print-color-adjust: exact; /* Chrome, Safari */
-                -moz-print-color-adjust: exact;    /* Firefox */
-                print-color-adjust: exact;         /* Standard */
-            }
 
+    <style>
+        /* Thermal receipt size: 56mm x 104mm */
+        @page {
+            size: 56mm 104mm;
+            margin: 2mm;
+        }
+
+        body {
+            font-family: sans-serif;
+            font-size: 12px;
+            width: 56mm;
+            margin: 0;
+            padding: 6px;
+            -webkit-print-color-adjust: exact;
+            -moz-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .ticket {
+            width: 100%;
+            padding: 4px;
+            border: 1px solid #000;
+            border-radius: 6px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .barcode-container {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .no-print {
+            display: none;
+        }
+
+        @media print {
             .no-print {
                 display: none;
             }
         }
     </style>
 </head>
-<body class="bg-white p-6">
+<body>
 
-<div class="max-w-md mx-auto border p-6 shadow-lg rounded-lg">
-    <h2 class="text-2xl font-bold mb-4 text-center">Repair Ticket</h2>
-    <div class="mb-2"><strong>Tracking ID:</strong> {{ ticket.tracking_id }}</div>
-    <div class="mb-2"><strong>Client:</strong> {{ ticket.client.first_name }} {{ ticket.client.last_name }}</div>
-    <div class="mb-2"><strong>Device:</strong> {{ ticket.device_type }} – {{ ticket.device_model }}</div>
-    <div class="mb-2"><strong>Status:</strong> {{ ticket.status|title }}</div>
-    <div class="mb-2"><strong>Created:</strong> {{ ticket.created_at|date:"Y-m-d H:i" }}</div>
+<div class="ticket">
+    <h2 class="text-2xl font-bold mb-2 text-center">Repair Ticket</h2>
+
+    <div class="mb-1"><strong>Tracking ID:</strong> {{ ticket.tracking_id }}</div>
+    <div class="mb-1"><strong>Client:</strong> {{ ticket.client.first_name }} {{ ticket.client.last_name }}</div>
+    <div class="mb-1"><strong>Phone:</strong> {{ ticket.client_phone|default:"N/A" }}</div>
+    <div class="mb-1"><strong>Device:</strong> {{ ticket.device_type }} – {{ ticket.device_model }}</div>
+    <div class="mb-1"><strong>Status:</strong> {{ ticket.status|title }}</div>
+    <div class="mb-1"><strong>Created:</strong> {{ ticket.created_at|date:"Y-m-d H:i" }}</div>
 
     <!-- Barcode -->
-    <div class="my-4 text-center">
+    <div class="barcode-container">
         <svg id="barcode"></svg>
     </div>
 
-    <div class="mt-4 text-center no-print">
+    <div class="mt-2 text-center no-print">
         <button onclick="window.print()"
             class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition">
             Print
@@ -52,7 +87,8 @@
         lineColor: "#000",
         width: 2,
         height: 50,
-        displayValue: true
+        displayValue: true,
+        textAlign: "center"
     });
 </script>
 

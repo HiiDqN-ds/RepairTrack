@@ -70,23 +70,15 @@ def update_ticket_status(request, id):
     ticket = get_object_or_404(Ticket, id=id)
 
     if request.method == "POST":
-        # Status
-        new_status = request.POST.get("status", ticket.status)
-        ticket.status = new_status
-
-        # Price
+        ticket.status = request.POST.get("status", ticket.status)
         price = request.POST.get("price")
         if price:
             ticket.estimated_price = price
-
-        # Staff note
         staff_note = request.POST.get("staff_note")
-
         ticket.save()
 
-        # Build email message
+        # Send email
         subject = f"Update zu Ihrem Reparaturauftrag #{ticket.tracking_id}"
-
         message = f"""
 Hallo {ticket.client.first_name},
 
@@ -103,18 +95,14 @@ Tracking Nummer: {ticket.tracking_id}
 Mit freundlichen Grüßen  
 Tanitech Team
 """
-
         try:
-            send_mail(
-                subject,
-                message,
-                None,
-                [ticket.client.email],
-                fail_silently=False,
-            )
+            send_mail(subject, message, None, [ticket.client.email], fail_silently=False)
             messages.success(request, "Update + Nachricht erfolgreich an Kunden gesendet ✅")
         except Exception as e:
             messages.error(request, f"E-Mail Fehler: {e} ❌")
+
+        # 🔹 Redirect to dashboard after success
+        return redirect('staff:dashboard')
 
     return redirect('staff:staff_ticket_detail', id=ticket.id)
 
