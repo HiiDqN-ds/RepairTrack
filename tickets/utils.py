@@ -28,8 +28,7 @@ def generate_pdf(ticket):
     # -----------------------------
     # HEADER (LOGO + ADDRESS)
     # -----------------------------
-    logo_path = os.path.join("media\images\logo.png")
-
+    logo_path = os.path.join(settings.BASE_DIR, "media", "images", "logo.png")
     header_data = []
 
     # Logo column
@@ -120,6 +119,15 @@ def generate_pdf(ticket):
     elements.append(Paragraph(agreement_text, normal))
     elements.append(Spacer(1, 30))
 
+    confirmation_text = """
+    <br/><br/>
+    <b>WICHTIGER HINWEIS:</b><br/>
+    Mit der Abgabe oder Einsendung des Geräts erklärt sich der Kunde mit diesen Bedingungen einverstanden.
+    Der angegebene Preis ist ein Richtwert und kann sich nach der Diagnose ändern.
+    Eine Reparatur erfolgt nur nach Freigabe durch den Kunden.
+    """
+    elements.append(Paragraph(agreement_text + confirmation_text, normal))
+    elements.append(Spacer(1, 30))
   
 
     doc.build(elements)
