@@ -10,23 +10,23 @@
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 
     <style>
-        /* Thermal receipt size: 56mm x 104mm */
+       /* Thermal receipt size: 104mm width × 56mm height */
         @page {
-            size: 56mm 104mm;
+            size: 104mm 56mm;
             margin: 2mm;
         }
 
         body {
             font-family: sans-serif;
             font-size: 12px;
-            width: 56mm;
+            width: 104mm;   /* full width of the ticket */
+            height: 56mm;   /* optional, ensures layout fits */
             margin: 0;
             padding: 6px;
             -webkit-print-color-adjust: exact;
             -moz-print-color-adjust: exact;
             print-color-adjust: exact;
         }
-
         .ticket {
             width: 100%;
             padding: 4px;
@@ -81,6 +81,8 @@
 </div>
 
 <script>
+
+    
     // Generate the barcode using the tracking ID
     JsBarcode("#barcode", "{{ ticket.tracking_id }}", {
         format: "CODE128",

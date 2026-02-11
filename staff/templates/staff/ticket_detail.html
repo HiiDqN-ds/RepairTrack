@@ -130,17 +130,14 @@
     printWindow.onload = function() {
       printWindow.focus();
       printWindow.print();
-    };
 
-    // Optional: auto-close popup and redirect main page
-    /*
-    printWindow.onafterprint = function() {
+      // After printing, close popup and redirect main page to dashboard
+      printWindow.onafterprint = function() {
         printWindow.close();
         window.location.href = "{% url 'staff:dashboard' %}";
+      };
     };
-    */
   });
 </script>
-
 </body>
 </html>
