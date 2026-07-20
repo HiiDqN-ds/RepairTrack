@@ -1,0 +1,2 @@
+# Environment variables\n.env\n\n# Django\n*.log\nlocal_settings.py\n\n# Databases\n*.sqlite3\n\n# Media\nmedia/**\n\n# IDE\n.vscode/\n.idea/\n\n# Bytecode\n__pycache__/\n*.pyc\n*.pyo\n.Python\n\n# OS\n.DS_Store\nThumbs.db\n\n# Static files\nstaticfiles/\n
+node_modules
