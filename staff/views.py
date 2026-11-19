@@ -16,10 +16,6 @@ from django.contrib.auth import authenticate, login
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.conf import settings
 
-# In-memory storage for paid users (user_id -> True for lifetime access)
-# In production, use a database model with a 'has_paid' flag
-PAID_USERS = set()
-
 def staff_login(request):
     """Staff login page (supports login by username OR email)."""
     next_url = request.GET.get("next") or request.POST.get("next") or '/staff/dashboard/'
@@ -50,21 +46,6 @@ def staff_login(request):
         return render(request, "staff/login.html", {"error": "Invalid credentials", "next": next_url})
 
     return render(request, "staff/login.html", {"next": next_url})
-
-
-
-def payment_required(request):
-    """Show payment page with PayPal link"""
-    # PayPal.me link for 150 EUR
-    paypal_link = "https://paypal.me/YOUR_PAYPAL_ID/150"
-    
-    return render(request, "staff/payment_required.html", {
-        "paypal_link": paypal_link,
-        "amount": 150
-    })
-
-
-
 
 @login_required(login_url='staff:login')
 def staff_logout(request):

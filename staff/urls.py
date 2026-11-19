@@ -5,7 +5,6 @@ app_name = 'staff'
 
 urlpatterns = [
     path('login/', views.staff_login, name='login'),
-    path('payment-required/', views.payment_required, name='payment_required'),
     path('logout/', views.staff_logout, name='logout'),
     path('dashboard/', views.staff_dashboard, name='dashboard'),
     path('ticket/<int:id>/', views.staff_ticket_detail, name='staff_ticket_detail'),

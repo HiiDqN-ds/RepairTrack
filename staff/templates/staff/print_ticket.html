@@ -46,7 +46,7 @@ html, body {
 /* TITLE */
 .ticket-title {
     text-align:center;
-    font-size:12px;
+    font-size:14pt;
     font-weight:bold;
     border-bottom:1px solid black;
     padding-bottom:1mm;
@@ -56,26 +56,31 @@ html, body {
 .ticket-info {
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:1mm;
-    margin-top:1mm;
+    gap:1.2mm;
+    margin-top:1.5mm;
 }
 
 .ticket-row {
     display:flex;
     flex-direction:column;
+    min-width:0;
 }
 
 .ticket-row strong {
-    font-size:6px;
+    font-size:7.5pt;
     text-transform:uppercase;
+    line-height:1.1;
 }
 
 .ticket-row span {
-    font-size:9px;
+    display:block;
+    min-width:0;
+    font-size:10pt;
     font-weight:600;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+    line-height:1.1;
 }
 
 /* BARCODE */
@@ -86,9 +91,9 @@ html, body {
 }
 
 .tracking-id-text {
-    font-size:9px;
+    font-size:10pt;
     font-weight:bold;
-    letter-spacing:1px;
+    letter-spacing:.5mm;
     margin-bottom:1mm;
 }
 
@@ -106,6 +111,11 @@ html, body {
 
     .ticket {
         page-break-inside:avoid;
+    }
+
+    * {
+        -webkit-print-color-adjust:exact;
+        print-color-adjust:exact;
     }
 }
 
@@ -175,8 +185,8 @@ window.onload = function(){
     JsBarcode("#barcode", "{{ ticket.tracking_id }}", {
         format:"CODE128",
         lineColor:"#000",
-        width:1.2,   // slightly thinner for small ticket
-        height:18,   // adjust for 56mm height
+        width:1.4,
+        height:20,
         displayValue:false,
         margin:0
     });

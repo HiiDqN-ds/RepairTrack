@@ -1,3 +1,8 @@
-from django.test import TestCase
+from django.test import SimpleTestCase
+from django.urls import Resolver404, resolve
 
-# Create your tests here.
+
+class PaymentRequirementRemovalTests(SimpleTestCase):
+    def test_payment_required_page_is_no_longer_routed(self):
+        with self.assertRaises(Resolver404):
+            resolve("/staff/payment-required/")
